@@ -1,0 +1,32 @@
+/* 페이드인 후 옅어지도록 하는 애니메이션 */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 0; /* 뜸을 들임 */
+    }
+    50% {
+        opacity: 1; /* 완전히 나타남 */
+    }
+    80% {
+        opacity: 1; /* 완전히 나타난 상태를 유지 */
+    }
+    100% {
+        opacity: 0.9; /* 옅어진 상태로 유지 */
+    }
+}
+
+/* welcome-box에 애니메이션 적용 */
+#welcomeMessage.welcome-box {
+    opacity: 0; /* 초기 상태에서 투명하게 설정 */
+    animation: fadeInOut 5s ease forwards;
+} /* 6초 동안 애니메이션 진행 */
+
+/* 웰컴 박스 사라짐 효과 */
+.welcome-box.hide {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+}

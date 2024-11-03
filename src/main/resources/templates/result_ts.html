@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" href="/css/result_ts.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <style>
+        body {
+            color: #000000; /* 기본 글자색을 검정으로 설정 */
+        }
+        .container {
+            width: 100%;
+            max-width: 700px; /* 고정된 컨테이너 너비 */
+            margin: 0 auto; /* 가운데 정렬 */
+            background-color: #ffffff; /* 하얀색 배경 */
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            position: relative; /* 고정된 사이즈 유지 */
+            overflow: hidden; /* 컨텐츠가 넘치지 않도록 */
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hidden {
+            display: none; /* 숨김 */
+        }
+
+        /* 폼이 나와도 사이즈 변동 방지 */
+        #scheduleForm {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            width: 100%;
+            transition: opacity 1s ease-in-out, visibility 0s 1s;
+        }
+
+        .show-form #scheduleForm {
+            opacity: 1;
+            visibility: visible;
+            position: static;
+            transition: opacity 1s ease-in-out, visibility 0s;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>
+        <a th:href="@{/}" style="color: white; text-decoration: none;">Plan Optima</a>
+    </h1>
+    <div class="spacer"></div>
+    <ul class="menu">
+        <li><a th:href="@{/cabinet}">Cabinet</a></li>
+        <li><a href="/calendar">Calendar</a></li>
+        <li><a href="/check">Check</a></li>
+        <li><a href="#">About</a></li>
+    </ul>
+
+
+</div>
+
+<div class="container">
+    <div class="recommendation-section" style="text-align: center;">
+        <p><span th:text="${schedule.getMember().getName()}" id="loginMember"></span> 님이 예상한 "<span th:text="${schedule.name}" id="scheduleName"></span>" 일정의 소요시간은 <span th:text="${schedule.getEstimatedTime()}"></span> 분</p>
+        <p>Plan Optima가 추천하는 할애 시간은</p>
+        <div id="loadingAnimation">
+            <div class="loading-circle"></div>
+            <div class="loading-circle"></div>
+            <div class="loading-circle"></div>
+        </div>
+        <p id="resultTime" class="hidden">"<span th:text="${adjustTime}"></span>" 분 입니다.</p>
+    </div>
+
+    <form id="scheduleForm" th:action="@{/result_ts/{id}(id=${schedule.id})}" method="post">
+
+        <div class="info-container" style="text-align: center; position: relative; display: flex; flex-direction: row; align-items: flex-start; justify-content: center; margin-top: -10px;">
+            <!-- ! 아이콘 -->
+            <div class="info-icon"
+                 onmouseover="showTooltip(this)"
+                 onmouseout="hideTooltip(this)"
+                 style="display:inline-block; width:30px; height:30px; background-color:yellow; border-radius:50%; text-align:center; font-weight:bold; font-size:24px; line-height:30px; cursor:pointer;">
+                !
+            </div>
+            <span style="margin-left: 10px; color:red;"
+                  onmouseover="showTooltip(this)"
+                  onmouseout="hideTooltip(this)">
+                  Plan Optima의 추천시간은 어떻게 나왔나요?
+            </span>
+
+            <!-- 툴팁 -->
+            <div class="tooltip" style="display:none; opacity: 0; position:absolute; top:60px; left:50%; transform:translateX(-50%) translateY(-10px); background-color: #fff; border: 1px solid #ccc; border-radius: 5px; padding: 10px; z-index: 1000; width: 550px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); transition: opacity 0.3s ease, transform 0.3s ease;">
+                <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                    <div style="margin-right: 20px; text-align: center;">
+                        <br>
+                        <span style="font-weight: bold; display: block; margin-bottom: 5px;">가장 많은 영향을 끼친 항목은 <span id="highImpact" style="font-weight: bold; background-color: #ffeeba; padding: 2px 5px; border-radius: 3px;"></span> 입니다.</span><br><br>
+                        <span style="font-weight: bold; display: block;">가장 적은 영향을 끼친 항목은 <span id="lowImpact" style="font-weight: bold; background-color: #ffeeba; padding: 2px 5px; border-radius: 3px;"></span> 입니다.</span>
+                    </div>
+
+                    <!-- 수치 정보를 세로로 배치하는 컨테이너 -->
+                    <div style="background-color: #f0f8ff; border: 1px solid #ccc; border-radius: 5px; padding: 10px; text-align: left;">
+                        <strong>수치 정보</strong><br>
+                        <div>스트레스 : <span th:text="${schedule.stress}"></span></div>
+                        <div>중요도 : <span th:text="${schedule.importance}"></span></div>
+                        <div>난이도 : <span th:text="${schedule.difficulty}"></span></div>
+                        <div>긴급도 : <span th:text="${schedule.urgency}"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group" style="text-align: center;">
+            <label class="question-icon">원하는 휴식시간 정도를 골라주세요.</label>
+            <div class="rest-time-preference" style="text-align: center;">
+                <div class="rest-option" data-time="30분">30분</div>
+                <div class="rest-option" data-time="1시간">1시간</div>
+                <div class="rest-option" data-time="1시간 30분">1시간 30분</div>
+                <div class="rest-option" data-time="2시간">2시간</div>
+            </div>
+            <input type="hidden" id="restTime" name="restTime" required>
+        </div>
+
+        <div class="form-group" style="text-align: center;">
+            <label class="question-icon">작업 선호 시간대를 선택해주세요.</label>
+            <div class="time-preference" style="text-align: center;">
+                <div class="time-option" data-time="새벽">새벽</div>
+                <div class="time-option" data-time="아침">아침</div>
+                <div class="time-option" data-time="점심">점심</div>
+                <div class="time-option" data-time="저녁">저녁</div>
+                <div class="time-option" data-time="밤">밤</div>
+            </div>
+            <input type="hidden" id="preferenceTime" name="preferenceTime" required>
+        </div>
+
+        <div style="text-align: center;">
+            <button type="button" id="selectDateButton">제출하기</button>
+        </div>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    const maxTask = /*[[${maxTask}]]*/ '없음';
+    const maxAdjustment = /*[[${maxAdjustment}]]*/ 0;
+    const minTask = /*[[${minTask}]]*/ '없음';
+    const minAdjustment = /*[[${minAdjustment}]]*/ 0;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const loadingAnimation = document.getElementById('loadingAnimation');
+        const resultTime = document.getElementById('resultTime');
+        const container = document.querySelector('.container');
+
+        setTimeout(() => {
+            loadingAnimation.style.display = 'none';
+            resultTime.classList.remove('hidden');
+
+            setTimeout(() => {
+                const scheduleForm = document.getElementById('scheduleForm');
+                scheduleForm.classList.add('fade-in');
+                container.classList.add('show-form'); // 폼 표시, 사이즈는 그대로 유지
+            }, 2500);
+        }, 4000);
+    });
+
+
+
+
+    function showTooltip(element) {
+        const tooltip = element.nextElementSibling.nextElementSibling;
+        tooltip.style.display = 'block';
+        setTimeout(() => {
+            tooltip.style.opacity = '1';
+            tooltip.style.transform = 'translateX(-50%) translateY(0)';
+        }, 0);
+
+        document.getElementById('highImpact').innerText = `${maxTask}`;
+        document.getElementById('lowImpact').innerText = `${minTask}`;
+    }
+
+    function hideTooltip(element) {
+        const tooltip = element.nextElementSibling.nextElementSibling;
+        tooltip.style.opacity = '0';
+        tooltip.style.transform = 'translateX(-50%) translateY(-10px)';
+        setTimeout(() => {
+            tooltip.style.display = 'none';
+        }, 300);
+    }
+</script>
+
+<script src="/js/timePreference.js"></script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+/*header {*/
+/*    background-color: #333;*/
+/*    color: white;*/
+/*    padding: 10px 20px;*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    align-items: center;*/
+/*}*/
+
+/* 사이트 이름 스타일 */
+.site-name {
+    font-size: 24px;
+}
+
+/* 내비게이션 스타일 */
+nav {
+    flex-grow: 1;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.schedule-box h3 {
+    margin: 0;
+    color: #333;
+}
+
+.schedule-box p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.schedule-box {
+    border: 2px solid #4d4d4d;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* 위치 고정 */
+    transition: border-width 0.3s ease, border-color 0.3s ease;
+}
+
+.schedule-box .schedule-text {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-start; /* 텍스트를 왼쪽에 고정 */
+}
+
+.schedule-box.blink {
+    border-width: 4px;
+    border-color: #000000;
+}
+
+@keyframes blink-border {
+    0% { border-color: #4d4d4d; }
+    50% { border-color: yellow; }
+    100% { border-color: #4d4d4d; }
+}
+
+/* 체크박스 기본적으로 숨김 */
+.checkbox {
+    display: none;
+}
+
+/* 체크모드 활성화 시 체크박스를 보이게 설정 */
+.checkbox-enabled .checkbox {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 10px; /* 오른쪽 끝으로 배치 */
+    cursor: pointer;
+}
+
+/* 체크박스 활성화 상태일 때 스케줄 박스의 레이아웃 */
+.checkbox-enabled .schedule-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 40px; /* 체크박스 오른쪽에 공간 확보 */
+}
+
+.checkbox-enabled .schedule-box:hover {
+    border-width: 3px;
+    border-color: #888;
+}
+
+/* 체크모드 버튼 스타일 */
+#toggle-check-mode {
+    font-size: 20px; /* 버튼 글자 크기 */
+    padding: 12px 24px; /* 버튼의 내부 여백 */
+    margin: 20px 0; /* 위 아래 간격 추가 */
+    background-color: #3498db; /* 버튼 배경색 */
+    color: white; /* 글자 색상 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#toggle-check-mode:hover {
+    background-color: #2980b9; /* 버튼 호버 시 색상 변경 */
+}
+
+/* 선택된 항목 병합하기 버튼 스타일 */
+#process-selection {
+    font-size: 18px; /* 버튼 글자 크기 */
+    padding: 12px 24px; /* 버튼의 내부 여백 */
+    margin-top: 20px; /* 위 버튼과의 간격 추가 */
+    margin-right: 10px; /* 오른쪽 여백 추가 */
+    background-color: #64cd95; /* 병합 버튼 배경색 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#process-selection:hover {
+    background-color: #27ae60; /* 버튼 호버 시 색상 변경 */
+}
+
+/* 선택된 스케줄 삭제 버튼 스타일 */
+#delete-selection {
+    font-size: 18px; /* 버튼 글자 크기 */
+    padding: 12px 24px; /* 버튼의 내부 여백 */
+    margin-top: 10px; /* 병합 버튼과 간격 추가 */
+    background-color: #cb6541; /* 삭제 버튼 배경색 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#delete-selection:hover {
+    background-color: #c0392b; /* 버튼 호버 시 색상 변경 */
+}

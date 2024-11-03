@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/header.css"> <!-- 기존 헤더 스타일 적용 -->
+    <script src="/js/header.js" defer></script>
+    <title>Select Schedule Type</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000; /* 배경을 검은색으로 설정 */
+            color: white; /* 기본 텍스트 색상을 흰색으로 설정 */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%; /* 화면 세로의 3분의 1 지점 */
+            transform: translateY(-50%); /* 세로 중앙 정렬 */
+            text-align: center;
+            max-width: 600px; /* 컨테이너의 최대 너비를 확장 */
+            margin: auto;
+        }
+
+        /* 제목에 간격과 적절한 글자 크기 적용 */
+        .container h2 {
+            font-size: 27px; /* 제목 글자 크기 조정 */
+            margin-bottom: 40px; /* 버튼과의 간격을 40px로 설정 */
+            white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+        }
+
+        /* 버튼 스타일 */
+        .button {
+            display: block;
+            width: 100%;
+            margin: 20px 0; /* 간격을 20px로 설정 */
+            padding: 20px; /* 버튼의 내부 여백을 키움 */
+            font-size: 18px; /* 버튼 글자 크기 증가 */
+            color: white; /* 버튼 글자 색상을 흰색으로 설정 */
+            background-color: transparent;
+            border: 1px solid #fff; /* 버튼 테두리를 흰색으로 설정 */
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s, transform 0.2s;
+        }
+
+        .button:hover {
+            background-color: #fff; /* 마우스를 올렸을 때 배경을 흰색으로 변경 */
+            color: #000; /* 텍스트 색상을 검은색으로 변경 */
+            transform: scale(1.05); /* 버튼을 약간 키워서 강조 */
+        }
+
+        .button:active {
+            background-color: #f0f0f0; /* 클릭할 때 연한 회색으로 변경 */
+            color: #333;
+            transform: scale(0.98); /* 클릭할 때 버튼이 살짝 줄어듦 */
+        }
+    </style>
+</head>
+<body>
+<div class="header"> <!-- header 클래스 유지 -->
+    <h1>
+        <a th:href="@{/}">Plan Optima</a> <!-- 헤더의 로고 또는 이름 -->
+    </h1>
+    <div class="spacer"></div>
+    <ul class="menu">
+        <li><a href="/cabinet">Cabinet</a></li>
+        <li><a href="/calendar">Calendar</a></li>
+        <li><a href="/check">Check</a></li>
+        <li><a href="#">About</a></li>
+    </ul>
+</div>
+
+<div class="container">
+    <h2>다음 중에서 원하는 작업 방식을 선택해주세요</h2>
+    <form id="optionForm" action="/select" method="post">
+        <button class="button" type="button" onclick="selectOption('concentrate')">빠른 완료를 위한 집중적인 일정</button>
+        <button class="button" type="button" onclick="selectOption('distribute')">작업을 분산시켜 천천히 진행하는 일정</button>
+        <button class="button" type="button" onclick="selectOption('flexible')">유동적으로 시간 조정이 가능한 일정</button>
+
+        <!-- Hidden input to store selected option -->
+        <input type="hidden" id="selectedOption" name="option">
+        <!-- Hidden input to store schedule id -->
+        <input type="hidden" id="scheduleId" name="id" th:value="${id}">
+    </form>
+</div>
+
+<script>
+    function selectOption(option) {
+        // Set selected option in the hidden input field
+        document.getElementById('selectedOption').value = option;
+        // Submit the form programmatically
+        document.getElementById('optionForm').submit();
+    }
+</script>
+
+</body>
+</html>

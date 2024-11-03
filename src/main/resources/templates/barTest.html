@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세로 슬라이더 예제</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css" rel="stylesheet">
+    <style>
+        .slider-container {
+            display: flex;
+            justify-content: center;  /* 슬라이더들을 중앙에 배치 */
+            align-items: center;
+            height: 300px;
+            margin-top: 50px;
+        }
+
+        .slider {
+            height: 200px;
+            width: 30px;
+            margin: 0 60px;  /* 각 슬라이더 사이의 간격을 좁게 설정 */
+        }
+
+        .slider-label {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* 핸들과 선택된 부분의 색상 */
+        .noUi-handle {
+            background-color: #53dbca;
+        }
+
+        .noUi-connect {
+            background-color: #079e8c;
+        }
+
+        /* 슬라이더 바의 두께 */
+        .noUi-vertical .noUi-base {
+            width: 100%;
+        }
+
+        .noUi-vertical .noUi-connect {
+            width: 100%;
+        }
+
+        /* 눈금 스타일 */
+        .noUi-pips {
+            font-size: 12px;
+        }
+
+        .noUi-value {
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="slider-container">
+    <div>
+        <div id="difficultySlider" class="slider"></div>
+        <div class="slider-label">난이도</div>
+    </div>
+    <div>
+        <div id="stressSlider" class="slider"></div>
+        <div class="slider-label">스트레스</div>
+    </div>
+    <div>
+        <div id="urgencySlider" class="slider"></div>
+        <div class="slider-label">긴급도</div>
+    </div>
+    <div>
+        <div id="importanceSlider" class="slider"></div>
+        <div class="slider-label">중요도</div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
+<script>
+    function createSlider(id) {
+        noUiSlider.create(document.getElementById(id), {
+            start: 3,
+            orientation: 'vertical',
+            direction: 'rtl',
+            connect: [true, false],
+            range: {
+                'min': 1,
+                'max': 5
+            },
+            step: 1,
+            pips: {
+                mode: 'steps',
+                density: 5,
+                format: {
+                    to: function (value) {
+                        return Math.round(value);
+                    }
+                }
+            }
+        });
+    }
+
+    createSlider('difficultySlider');
+    createSlider('stressSlider');
+    createSlider('urgencySlider');
+    createSlider('importanceSlider');
+</script>
+
+</body>
+</html>

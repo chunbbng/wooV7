@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Info</title>
+    <link rel="stylesheet" th:href="@{/css/cabinet.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/scheduleInfo.css}">
+    <style>
+        /* 항목 간의 간격 설정 */
+        .schedule-details p {
+            margin-bottom: 15px;
+            font-size: 20px; /* p 요소의 글씨 크기 설정 */
+        }
+
+        /* span 요소에 대한 스타일 설정 (세부 정보의 글씨 크기) */
+        .schedule-details span {
+            font-size: 18px; /* span 요소의 글씨 크기 설정 */
+        }
+
+        /* 버튼과 위의 내용 사이 간격 */
+        .back-button-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>
+        <a th:href="@{/}" style="color: white; text-decoration: none;">Plan Optima</a>
+    </h1>
+    <div class="spacer"></div>
+    <ul class="menu">
+        <li><a href="/cabinet">Cabinet</a></li>
+        <li><a href="/calendar">Calendar</a></li>
+        <li><a href="/check">Check</a></li>
+        <li><a href="#">About</a></li>
+    </ul>
+    <div id="headerLogout" class="logout-button" th:if="${member != null}">로그아웃</div>
+</div>
+
+<main>
+    <h1 th:text="'Schedule Details for  ' + ${schedule.name}">Schedule Details</h1>
+
+    <div class="schedule-details">
+        <p><strong>Schedule Name:</strong> <span th:text="${schedule.name}">Schedule Name</span></p>
+        <p><strong>Difficulty:</strong> <span th:text="${schedule.difficulty}">Difficulty Level</span></p>
+        <p><strong>Importance:</strong> <span th:text="${schedule.importance}">Importance Level</span></p>
+        <p><strong>Urgency:</strong> <span th:text="${schedule.urgency}">Urgency Level</span></p>
+        <p><strong>Stress Level:</strong> <span th:text="${schedule.stress}">Stress Level</span></p>
+        <p><strong>Rest Time:</strong> <span th:text="${schedule.restTime}">Rest Time</span></p>
+        <p><strong>Preferred Time:</strong> <span th:text="${schedule.preferenceTime}">Preferred Time</span></p>
+        <p><strong>Adjust Time:</strong> <span th:text="${schedule.adjustTime}">Adjust Time</span></p>
+    </div>
+
+    <div class="back-button-container">
+        <button type="button" onclick="window.history.back();">돌아가기</button>
+    </div>
+</main>
+
+<!-- Optional: Include additional JavaScript files -->
+<script src="/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="/css/header.css"> <!-- 헤더 CSS 파일 -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="/js/header.js" defer></script>
+
+    <style>
+        body {
+            background-color: #f5f5f5; /* 헤더 제외한 전체 배경색 */
+            color: #000000; /* 기본 글자색 검정 */
+        }
+        /* 헤더를 제외한 전체 컨텐츠 배경을 흰색으로 설정 */
+        .content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        /* 돌아가기 버튼 컨테이너 스타일 */
+        .back-button-container {
+            text-align: center; /* 버튼을 중앙 정렬 */
+            margin-top: 20px; /* 버튼과 캘린더 사이의 여백 추가 */
+        }
+
+        /* 돌아가기 버튼 스타일 */
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            background: #3498db; /* 버튼 배경색 */
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background: #2980b9; /* 버튼 호버 시 색상 변경 */
+        }
+    </style>
+</head>
+<body>
+
+<!-- 헤더 섹션 추가 -->
+<div class="header">
+    <h1>
+        <a th:href="@{/}" style="color: white; text-decoration: none;">Plan Optima</a>
+    </h1>
+    <div class="spacer"></div>
+    <ul class="menu">
+        <li><a href="/cabinet">Cabinet</a></li>
+        <li><a href="/calendar">Calendar</a></li>
+        <li><a href="/check">Check</a></li>
+        <li><a href="#">About</a></li>
+    </ul>
+    <div id="headerLogout" class="logout-button">로그아웃</div>
+</div>
+
+<!-- 메인 컨텐츠 섹션을 흰색 배경으로 -->
+<div class="content">
+    <h1 class="centered-text_calendar">캘린더</h1>
+    <div id='calendar' style="max-width: 900px; margin: 0 auto;"></div>
+
+    <div class="back-button-container">
+        <a href="/" class="back-button">돌아가기</a>
+    </div>
+</div>
+
+<script th:inline="javascript">
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const headerLogoutButton = document.getElementById("headerLogout");
+
+        if (!headerLogoutButton) {
+            console.error("로그아웃 버튼 요소가 로드되지 않았습니다.");
+            return;
+        }
+
+        // 로그아웃 버튼 클릭 시 처리
+        headerLogoutButton.addEventListener("click", function () {
+            // 로그아웃 요청을 보냅니다
+            fetch('/auth/logout', { method: 'POST' })
+                .then(() => {
+                    // 로그아웃 후 메인 페이지로 리디렉션
+                    window.location.href = "/"; // 또는 원하는 URL로 변경
+                })
+                .catch(error => {
+                    console.error("로그아웃 오류:", error);
+                });
+        });
+
+        // 항상 로그아웃 버튼 표시
+        headerLogoutButton.style.display = "block";
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 스케줄 데이터를 서버에서 받아옵니다.
+        const schedules = /*[[${schedules}]]*/ '[]'; // 서버에서 받아온 스케줄 데이터
+
+        // 서버에서 받은 JSON 데이터를 JavaScript 객체로 변환
+        const scheduleData = JSON.parse(schedules);
+
+        // 랜덤 색상 생성 함수
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // FullCalendar 초기화
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: scheduleData.flatMap(dto => {
+                // 랜덤 색상 생성
+                const color = getRandomColor();
+
+                // selectedDates가 배열인지 확인
+                if (Array.isArray(dto.selectedDates)) {
+                    return dto.selectedDates.map(date => ({
+                        title: dto.title,
+                        start: date,
+                        end: date,
+                        color: color // 랜덤 색상 설정
+                    }));
+                } else {
+                    console.warn(`Expected selectedDates to be an array, but got ${typeof dto.selectedDates}`);
+                    return []; // 빈 배열 반환
+                }
+            })
+        });
+
+
+        // 캘린더 렌더링
+        calendar.render();
+    });
+</script>
+<script src="/js/auth.js"></script> <!-- auth.js 추가 -->
+</body>
+</html>

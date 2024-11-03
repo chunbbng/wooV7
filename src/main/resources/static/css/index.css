@@ -1,0 +1,468 @@
+/* 인덱스 페이지에만 적용되는 스타일 */
+.index-page {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* 수평 스크롤바 제거 */
+}
+
+.index-page .main-container {
+    width: 100vw; /* 전체 뷰포트 너비를 차지 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* 가운데 텍스트 스타일 */
+.centered-text {
+
+    text-align: left;
+    margin-left: 280px;
+    margin-top: 160px;
+    font-size: 24px; /* 글자 크기를 더 키움 */
+    line-height: 1.5;
+    color: #153753;
+    letter-spacing: 0.05em; /* 글자 간격 조절 */
+}
+
+/***********************************************************************************/
+/* 애니메이션 컨테이너 */
+.animation-container {
+    position: absolute;    /* 절대 위치 설정 */
+    top: 30%;              /* 수직으로 화면의 중간에 배치 */
+    right: 10%;            /* 오른쪽에서 10% 떨어지도록 배치 */
+    transform: translateY(-50%); /* 수직 가운데 정렬을 위해 Y축 기준 이동 */
+}
+
+/* 둥근 테두리를 추가한 컨테이너 */
+.animation-wrapper {
+    width: 500px;           /* 원하는 너비로 조정 */
+    height: 250px;          /* 원하는 높이로 조정 */
+    overflow: hidden;       /* 자식 요소가 테두리를 넘지 않도록 숨김 */
+    border-radius: 15px;    /* 둥근 테두리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+}
+
+.animation {
+    width: 100%;           /* 컨테이너 너비에 맞춤 */
+    height: 100%;          /* 컨테이너 높이에 맞춤 */
+    object-fit: cover;     /* GIF가 잘리지 않도록 조정 */
+    transition: transform 0.3s ease; /* 애니메이션 효과 */
+}
+
+
+
+/* ***************************************************************************** */
+/* 작업 유형 레이블과 스케줄명 입력 부분 */
+.question-label-group {
+
+    font-size: 26px;
+    font-weight: 455;
+    margin-top: 130px;
+    margin-left: 310px; /* 오른쪽으로 밀기 위한 여백 */
+    margin-right: 50px; /* 입력 필드와의 간격을 50px로 설정하여 더 넓힘 */
+    width: 600px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    position: relative; /* 요소의 위치를 자유롭게 조정할 수 있도록 설정 */
+}
+
+/* 레이블을 블록 요소로 설정 */
+.question-label-group label {
+    display: inline-block; /* inline-block으로 요소 간격 조정 */
+    margin-right: 40px; /* 입력 필드와의 간격 설정 */
+}
+
+/* 입력 필드 크기 조정 */
+.question-label-group input[type="text"] {
+    width: 330px; /* 입력 필드 너비를 400px로 설정 */
+    padding: 10px; /* 입력 필드 안쪽 여백 설정 */
+    font-size: 24px; /* 텍스트 크기 */
+    box-sizing: border-box; /* padding과 border를 포함한 크기 계산 */
+    text-align: center; /* 텍스트를 입력 필드 중앙에서 입력되도록 설정 */
+}
+
+
+/* ************************************************************************ */
+.task-type-preference {
+    display: flex; /* 가로로 배치 */
+    justify-content: center; /* 중앙 정렬 */
+    flex-wrap: wrap; /* 줄바꿈 허용 */
+    gap: 40px; /* 요소 간의 간격 */
+    margin-top: 60px;
+    padding: 0 50px;
+    margin-left: 100px; /* 오른쪽으로 100px 이동 */
+}
+
+/* 육각형 요소의 스타일 */
+.task-option {
+    width: 170px; /* 옵션 크기 */
+    height: 190px; /* 높이 */
+    object-fit: contain; /* 이미지 비율을 유지하면서 조정 */
+    cursor: pointer;
+    transition: transform 0.3s;
+    text-align: center;
+    position: relative; /* 상하 이동을 위해 위치 조정 가능 */
+}
+
+/* 지그재그 효과를 위해 홀수 요소는 위로, 짝수 요소는 아래로 이동 */
+.task-option:nth-child(odd) {
+    transform: translateY(-20px); /* 홀수 요소는 위로 이동 */
+}
+
+.task-option:nth-child(even) {
+    transform: translateY(20px); /* 짝수 요소는 아래로 이동 */
+}
+
+.task-option img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0;
+}
+
+.task-option:hover {
+    transform: scale(1.1); /* 마우스 호버 시 확대 */
+}
+
+.task-option.selected img {
+    border: 3px solid #8affef;
+    border-radius: 5%; /* 이미지 모양에 맞춘 둥근 테두리 */
+}
+
+/* ************************************************************* */
+
+/* ************************************************************************* */
+
+/* 휴식 시간 선택 요소의 크기 및 모양 조정 */
+.rest-time-preference {
+    display: flex; /* 가로 정렬 */
+    gap: 10px; /* 옵션들 사이 간격 */
+}
+
+.rest-option {
+    font-size: 20px; /* 글자 크기 */
+    padding: 15px 25px; /* 내부 여백 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    cursor: pointer; /* 마우스를 올렸을 때 포인터로 변경 */
+    transition: background-color 0.3s ease; /* 배경색 전환 애니메이션 */
+    background-color: #f0f0f0; /* 기본 배경색 */
+    border: 1px solid #ccc; /* 기본 테두리 */
+    color: #000; /* 글자 색상 어두운 색으로 변경 */
+}
+
+/* 선택된 휴식 시간의 스타일 */
+.rest-option.selected {
+    background-color: #20a3ee; /* 선택된 배경색 */
+    color: #fff; /* 선택된 글자 색상 */
+}
+
+/* 선호 시간대 선택 요소의 크기 조정 */
+.time-preference .time-option {
+    font-size: 20px; /* 시간대 옵션의 글자 크기 */
+    padding: 15px 25px; /* 시간대 옵션의 내부 여백 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    cursor: pointer; /* 마우스를 올렸을 때 포인터로 변경 */
+    transition: background-color 0.3s ease; /* 배경색 전환 애니메이션 */
+}
+
+.time-preference .time-option.selected {
+    background-color: #20a3ee; /* 선택된 시간대의 배경색 */
+    color: #fff; /* 선택된 시간대의 글자 색상 */
+}
+
+/* 선호 시간대 선택 요소의 크기 조정 */
+.time-preference .time-option {
+    font-size: 20px; /* 시간대 옵션의 글자 크기 */
+    padding: 15px 25px; /* 시간대 옵션의 내부 여백 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    cursor: pointer; /* 마우스를 올렸을 때 포인터로 변경 */
+    transition: background-color 0.3s ease; /* 배경색 전환 애니메이션 */
+}
+
+.time-preference .time-option.selected {
+    background-color: #20a3ee; /* 선택된 시간대의 배경색 */
+    color: #fff; /* 선택된 시간대의 글자 색상 */
+}
+
+/* 아이콘 추가 */
+.question-icon::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 100,50 50,100 0,50" style="fill:%2300d9ff"/></svg>');
+    background-size: contain;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+
+/* ************************************************************************** */
+/* 시간 옵션 스타일 */
+.time-option {
+    display: inline-block;
+    padding: 10px 20px; /* 패딩을 늘려 버튼 크기를 키움 */
+    border: 1px solid grey; /* 회색 테두리 추가 */
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    border-radius: 5px; /* 테두리에 약간의 둥근 모서리 추가 */
+}
+
+
+/* ******************************************************************************** */
+
+/* 핸들과 선택된 부분의 색상 */
+.noUi-handle {
+    background-color: #53dbca;
+}
+
+.noUi-connect {
+    background-color: #079e8c;
+}
+
+/* 눈금 표시기 (크기, 색상, 위치) */
+.noUi-marker {
+    background-color: #ff5722; /* 눈금 표시기의 색상 */
+    width: 7px; /* 눈금 표시기의 너비 */
+    height: 6px; /* 눈금 표시기의 높이 */
+    top: 15px; /* 눈금 표시기의 위치 조정 */
+}
+
+
+/* 수평 슬라이더에서 눈금 표시기의 크기 및 위치 조정 */
+.noUi-marker-horizontal {
+    margin-left: -3px; /* 눈금이 슬라이더 중앙에 정렬되도록 위치 조정 */
+}
+
+/* 눈금 숫자 (크기, 색상) */
+.noUi-value {
+    font-size: 17px; /* 숫자 크기 */
+    color: #696464; /* 숫자 색상 */
+    font-weight: bold; /* 숫자 굵게 */
+    margin-top: 16px; /* 숫자와 눈금 사이의 간격 조정 */
+}
+
+/* 선택된 시간 레이블 */
+.time-label {
+    font-size: 24px; /* 폰트 크기 */
+    bold: 400;
+    margin-top: 75px; /* 슬라이더와의 간격 */
+    color: #0a0a0a; /* 텍스트 색상 */
+    margin-left: 35%;
+    top: 30px; /* 슬라이더와의 거리 조정 */
+    width: 100%; /* 전체 너비 차지 */
+    display: block; /* 블록 요소로 처리 */
+
+}
+
+.time-label span {
+    font-size: 1em; /* 선택된 시간 텍스트 크기 */
+}
+
+/* 눈금 스타일 */
+.noUi-pips {
+    font-size: 1em; /* 눈금 숫자 크기 */
+    color: #0c0c0c; /* 눈금 숫자 색상 */
+}
+
+/* 예상 소요 시간 슬라이더 채우기 색상 */
+.noUi-connect {
+    background-color: #4CAF50;
+}
+
+
+/* ********************************************************************************** */
+/* 평균 시간 컨테이너 스타일 */
+
+
+/* 평균시간을 나타내는 노란색 바 스타일 */
+.average-time-bar {
+    background-color: #ffff00;
+    height: 20px;
+    width: 0; /* 처음에 0 너비로 시작, 동적으로 너비 조정 */
+    margin: 0 auto;
+    border: 1px solid purple; /* 그림처럼 보라색 테두리 */
+}
+
+
+/* ***************************************************************************************** */
+/* 슬라이더 그룹의 스타일 */
+/* 슬라이더 그룹의 스타일 */
+.time-selection-group {
+    margin-top: 70px; /* 상단 여백 */
+    margin-left: 100px; /* 왼쪽 여백 */
+    margin-right: 80px; /* 오른쪽 여백 */
+
+    display: flex;
+    flex-direction: column; /* 슬라이더들을 세로로 정렬 */
+    align-items: center; /* 가운데 정렬 */
+    width: 100%; /* 전체 그룹 너비 */
+    position: relative; /* 자식 요소를 절대 위치로 배치할 수 있도록 relative 설정 */
+}
+
+/* .question-label2의 스타일 */
+.question-label2 {
+    position: absolute; /* 절대 위치로 설정하여 독립적인 위치 지정 가능 */
+    top: 11px; /* 상단에서부터의 위치 조정 */
+    left: 185px; /* 왼쪽에서부터의 위치 조정 */
+    font-size: 30px; /* 텍스트 크기 */
+    font-weight: 455; /* 텍스트 굵기 */
+    color: #0a0a0a; /* 텍스트 색상 */
+    padding: 10px 20px; /* 라벨 내부 여백 조정 */
+
+    border-radius: 5px; /* 모서리를 둥글게 설정 */
+    z-index: 10; /* 다른 요소 위에 표시되도록 z-index 설정 */
+}
+
+/* 첫 번째 슬라이더 컨테이너 */
+.predict-slider-container {
+    width: 80%; /* 첫 번째 슬라이더의 너비 */
+    margin-top: 130px; /* 상단 여백 */
+
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+}
+
+/* 두 번째 슬라이더 컨테이너 */
+.second-slider-container {
+    width: 80%; /* 두 번째 슬라이더의 너비 */
+    margin: 30px auto; /* 상하 여백 */
+    margin-left: -240px; /* 왼쪽으로 이동 */
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+
+}
+
+/* 첫 번째 슬라이더 스타일 */
+#predictSlider {
+    margin-left: 50px !important; /* 왼쪽으로 이동, 우선순위 높이기 */
+    width: 100%; /* 첫 번째 슬라이더의 너비를 컨테이너에 맞춤 */
+    height: 30px; /* 슬라이더 높이 */
+    background-color: #e0e0e0; /* 슬라이더 배경 색상 */
+    border-radius: 5px; /* 슬라이더 둥근 모서리 */
+    box-sizing: border-box; /* 슬라이더의 크기가 여백을 포함 */
+}
+
+/* 두 번째 슬라이더 스타일 */
+#secondSlider {
+    width: 100%; /* 두 번째 슬라이더의 너비를 컨테이너에 맞춤 */
+    height: 30px; /* 슬라이더 높이 */
+    background-color: #e0e0e0; /* 슬라이더 배경 색상 */
+    border-radius: 5px; /* 슬라이더 둥근 모서리 */
+    box-sizing: border-box; /* 슬라이더의 크기가 여백을 포함 */
+    margin-bottom: 40px; /* 질문과 슬라이더 사이 간격 */
+}
+
+
+/* ********************************************************** */
+.expand-button {
+    background-color: transparent; /* 배경 투명 */
+    border: none; /* 테두리 없음 */
+    cursor: pointer; /* 포인터 모양 */
+    font-size: 30px; /* 버튼 텍스트 크기 조정 */
+    padding: 20px 20px; /* 버튼 크기 조정 (위아래 15px, 좌우 20px) */
+    margin-right: 10%;
+    margin-top: -30px;
+    gap: 10px; /* 아이콘과 텍스트 간격 */
+
+    position: relative; /* 위치를 상대적으로 조정할 수 있도록 설정 */
+    width: 150px; /* 버튼의 너비 조정 */
+    height: 30px; /* 버튼의 높이 조정 */
+}
+
+/* 아이콘 스타일 */
+.expand-button::before {
+    content: "▼"; /* 기본 상태는 아래 세모 */
+    font-size: 30px; /* 아이콘 크기 조정 */
+    color: #00bbff; /* 아이콘 색상 */
+    transition: transform 0.3s ease; /* 아이콘 전환 애니메이션 */
+}
+
+/* 확장 시 위로 세모 변경 */
+.expand-button.up::before {
+    content: "▲"; /* 확장 시 위로 세모 변경 */
+}
+
+/* ********************************************************************************* */
+/* 질문 레이블 스타일 */
+
+/* 평가 컨테이너 */
+.evaluation-container {
+    position: relative; /* 컨테이너의 위치 조정 가능 */
+    margin-top: 110px; /* 위쪽 여백 */
+    padding: 20px; /* 내부 여백 추가 */
+}
+
+/* 슬라이더 컨테이너 */
+.slider-container {
+    display: flex;
+    position: relative; /* 슬라이더들을 상대적으로 위치 조정 */
+    justify-content: flex-start; /* 슬라이더들을 왼쪽 정렬 */
+    align-items: flex-start; /* 슬라이더들이 위쪽 정렬 */
+    top: 40px; /* 슬라이더 컨테이너를 위아래로 이동 */
+    left: 240px; /* 슬라이더 컨테이너를 왼쪽으로 50px 이동 */
+    height: 300px; /* 슬라이더들의 높이 */
+}
+
+/* 질문 레이블 */
+.question-label3 {
+    font-size: 30px; /* 폰트 크기 */
+    font-weight: 455; /* 글씨 굵기 */
+    color: #000000; /* 텍스트 색상 */
+    position: relative; /* 질문 레이블 위치 조정 가능 */
+    bold: 455;
+    top: -10px; /* 위쪽으로 10px 이동 */
+    left: 280px; /* 왼쪽으로 30px 이동 */
+    text-align: left; /* 왼쪽 정렬 */
+    padding: 10px; /* 내부 여백 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    width: 100%; /* 전체 너비 사용 */
+}
+
+/* 슬라이더 스타일 */
+.slider {
+    height: 240px; /* 슬라이더 높이 */
+    width: 39px; /* 슬라이더 너비 */
+    margin: 0 100px; /* 슬라이더들 사이의 간격 */
+    position: relative; /* 슬라이더 위치 조정 가능 */
+    top: 20px; /* 슬라이더를 아래로 10px 이동 */
+    left: -60px; /* 슬라이더를 왼쪽으로 20px 이동 */
+}
+
+/* 슬라이더 레이블 (난이도, 스트레스 등 텍스트) */
+.slider-label {
+    text-align: left; /* 텍스트를 왼쪽으로 정렬 */
+    margin-top: 30px; /* 슬라이더와 레이블 사이 간격 */
+    position: relative; /* 슬라이더 레이블 위치 조정 가능 */
+    font-size: 22px;
+    top: 7px; /* 레이블을 위아래로 5px 이동 */
+    left: 15px; /* 텍스트를 왼쪽으로 20px 이동 */
+}
+
+
+/* 기존 CSS는 유지하고 버튼 스타일만 수정 */
+button.center-submit {
+    width: 130px;
+    height: 60px;
+    font-size: 23px;
+    background-color: #4384ec;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative; /* 슬라이더들과 상대적인 위치 조정 */
+    top: 45px; /* 상단에서 40px 아래로 이동 */
+    left: 60px; /* 왼쪽에서 40px 오른쪽으로 이동하여 슬라이더 옆에 위치 */
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+/* 버튼을 눌렀을 때 */
+button.center-submit:active {
+    background-color: #62caf6;
+}
+
+/* 버튼 위에 마우스를 올렸을 때 */
+button.center-submit:hover {
+    background-color: #62caf6;
+}

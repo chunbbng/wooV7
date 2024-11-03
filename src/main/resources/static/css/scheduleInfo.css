@@ -1,0 +1,16 @@
+.schedule-details {
+    margin: 20px 0;
+    font-size: 18px;
+}
+
+.schedule-details p {
+    margin-bottom: 10px;
+}
+
+.back-button-container {
+    margin-top: 20px;
+}
+
+.schedule-details {
+    color: #333333; /* 진한 회색 */
+}

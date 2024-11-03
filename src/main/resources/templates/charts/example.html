@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>병합된 일정 차트 보기</title>
+  <style>
+    h2.main-title {
+      text-align: center;
+      margin: 40px 0 60px; /* 상단과 하단에 여백 추가 */
+    }
+
+    .chart-container {
+      width: 600px;
+      height: 400px;
+      margin: 0 auto 60px; /* 아래쪽 여백 추가 */
+    }
+
+    #pie-chart {
+      width: 1000px;
+      height: 800px;
+      margin: 0 auto 40px; /* 아래쪽 여백 추가 */
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
+</head>
+<body>
+<h2 class="main-title">병합된 일정 차트 보기</h2>
+<div id="pie-chart" style="width: 1000px; height: 800px;"></div>
+<div id="main" style="width: 600px; height: 400px; margin: 0 auto; margin-bottom: 60px;"></div>
+<div id="priority" style="width: 600px; height: 400px; margin: 0 auto; margin-bottom: 60px;"></div>
+
+<script th:inline="javascript">
+  // 스케줄 데이터를 컨트롤러에서 전달받습니다.
+  var schedules = /*[[${schedules}]]*/ [];
+
+  // 시간대 블록(예: '밤', '새벽') 정의
+  var timeBlocks = {
+    '밤': { start: 0, end: 6 },
+    '새벽': { start: 6, end: 11 },
+    '아침': { start: 11, end: 14 },
+    '점심': { start: 14, end: 19 },
+    '저녁': { start: 19, end: 24 }
+  };
+
+  // 스케줄 데이터를 차트 데이터로 변환합니다.
+  var pieData = [];
+  var difficultiesValues = [];  // 스트레스 값 배열
+  var priorityValues = [];      // 우선순위 값 배열
+
+  schedules.forEach(schedule => {
+    // 컨트롤러에서 변환된 adjustTime과 restTime을 그대로 사용
+    let totalAdjustTime = schedule.adjustTime;
+    let totalRestTime = schedule.restTime; // 이미 숫자로 변환된 상태
+
+    // 선호 시간대가 여러 개일 경우 ','로 구분되어 있음
+    let preferredTime = schedule.preferenceTime ? schedule.preferenceTime.split(',') : [];
+    let availableTimeBlock = null;
+
+    pieData.push({
+      name: schedule.name,
+      value: totalAdjustTime,
+      itemStyle: { color: '#FF6347' } // 스케줄 시간의 색상 설정
+    });
+
+    pieData.push({
+      /* name: '휴식', */
+      value: totalRestTime,
+      itemStyle: { color: '#87CEFA' } // 휴식 시간의 색상 설정
+    });
+
+    // 24시간 중 사용되지 않은 시간을 계산하여 공백으로 표시
+    pieData.push({
+      name: '공백',
+      value: 24 - totalAdjustTime - totalRestTime,
+      itemStyle: { color: 'rgba(211, 211, 211, 0.3)' } // 공백 시간의 색상 설정
+    });
+
+    // difficultiesValues에 스트레스 값 추가
+    difficultiesValues.push(schedule.stress);
+
+    // priorityValues에 중요도와 긴급도의 합계 추가
+    priorityValues.push(schedule.importance + schedule.urgency);
+  });
+
+  // 차트 옵션 설정
+  var pieOption = {
+    title: {
+      text: '24시간 시간대 분할 및 스케줄 표시',
+      left: 'center'
+    },
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      orient: 'vertical',
+      left: '90%',
+      top: 'middle',
+      data: ['밤', '새벽', '아침', '점심', '저녁'],
+      textStyle: {
+        fontSize: 16
+      },
+      itemGap: 20,
+      padding: [10, 15, 10, 15]
+    },
+    polar: {
+      radius: ['0%', '70%']
+    },
+    angleAxis: {
+      type: 'category',
+      data: ['0시', '1시', '2시', '3시', '4시', '5시', '6시', '7시', '8시', '9시', '10시', '11시',
+        '12시', '13시', '14시', '15시', '16시', '17시', '18시', '19시', '20시', '21시', '22시', '23시'],
+      boundaryGap: false,
+      startAngle: 90,
+      clockwise: true,
+      axisLine: {
+        show: true,
+        lineStyle: { color: 'black', width: 2 }
+      },
+      axisTick: {
+        show: true,
+        length: 13,
+        lineStyle: { color: 'black', width: 1 }
+      },
+      axisLabel: {
+        show: true,
+        formatter: function(value) {
+          return value; // 시간대를 그대로 표시
+        }
+      }
+    },
+    radiusAxis: {
+      show: false
+    },
+    series: [
+      {
+        name: '시간대',
+        type: 'pie',
+        radius: ['70%', '80%'],
+        startAngle: 150,
+        label: { show: false },
+        itemStyle: {
+          borderType: 'solid',
+          borderColor: '#ccc',
+          color: function(params) {
+            var colorMap = {
+              '밤': 'rgba(0, 0, 255, 0.1)',
+              '새벽': 'rgba(0, 255, 255, 0.1)',
+              '아침': 'rgba(0, 255, 0, 0.1)',
+              '점심': 'rgba(255, 255, 0, 0.1)',
+              '저녁': 'rgba(255, 0, 0, 0.1)'
+            };
+            return colorMap[params.name];
+          }
+        },
+        data: [
+          { value: 6, name: '밤' },
+          { value: 5, name: '새벽' },
+          { value: 4, name: '아침' },
+          { value: 5, name: '점심' },
+          { value: 4, name: '저녁' }
+        ]
+      },
+      {
+        name: '스케줄',
+        type: 'pie',
+        radius: ['0%', '70%'],
+        startAngle: 150,
+        label: {
+          position: 'inside',
+          fontSize: 18,
+          formatter: '{b}: {c}시간'
+        },
+        data: pieData
+      }
+    ]
+  };
+
+  // 스트레스 비교 차트 옵션 설정
+  var stressOption = {
+    title: {
+      text: '스트레스 비교',
+      left: 'center',
+      textStyle: { fontSize: 30 }
+    },
+    xAxis: {
+      data: schedules.map(schedule => schedule.name),
+      axisLabel: { fontSize: 20 }
+    },
+    yAxis: {
+      axisLabel: { fontSize: 20 }
+    },
+    series: [{
+      name: 'Stress',
+      type: 'bar',
+      data: difficultiesValues,  // 스트레스 데이터를 설정
+      barWidth: '40%',
+      itemStyle: {
+        color: '#91CC75'
+      }
+    }]
+  };
+
+  // 우선순위 비교 차트 옵션 설정
+  var priorityOption = {
+    title: {
+      text: '우선순위 비교',
+      left: 'center',
+      textStyle: { fontSize: 30 }
+    },
+    xAxis: {
+      data: schedules.map(schedule => schedule.name),
+      axisLabel: { fontSize: 20 }
+    },
+    yAxis: {
+      axisLabel: { fontSize: 20 }
+    },
+    series: [{
+      name: 'Priority',
+      type: 'bar',
+      data: priorityValues,  // 우선순위 데이터를 설정
+      barWidth: '40%',
+      itemStyle: {
+        color: '#EE6666'
+      }
+    }]
+  };
+
+  // 차트 렌더링
+  var pieChart = echarts.init(document.getElementById('pie-chart'));
+  pieChart.setOption(pieOption);
+
+  var stressChart = echarts.init(document.getElementById('main'));
+  stressChart.setOption(stressOption);
+
+  var priorityChart = echarts.init(document.getElementById('priority'));
+  priorityChart.setOption(priorityOption);
+</script>
+
+</body>
+</html>
